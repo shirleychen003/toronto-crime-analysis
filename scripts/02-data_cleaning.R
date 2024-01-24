@@ -8,16 +8,17 @@
 
 #### Workspace setup ####
 library(tidyverse)
+library(here)
 library(janitor)
 library(opendatatoronto)
 
 raw_crime_data <- 
   read_csv(
-    file = 
-      "raw_crime_data.csv",
+    file = here("inputs/data/raw_crime_data.csv"),
     show_col_types = FALSE,
     skip = 0
   )
+
 
 cleaned_crime_data <-
   clean_names(raw_crime_data)
@@ -63,3 +64,4 @@ cleaned_crime_data$year |>
   min() == 2019
 cleaned_crime_data$year |> 
   max() == 2023
+
