@@ -32,7 +32,7 @@ cleaned_crime_data <-
                                          report_dow,occ_date, offence,
                                          ucr_code,ucr_ext, hood_140,
                                          division, neighbourhood_140, 
-                                         location_type))
+                                         location_type, occ_dow, occ_doy))
 # Keep years 2019-2023
 selected_years <- c("2019", "2020", "2021", "2022", "2023")
 cleaned_crime_data <- cleaned_crime_data |>
@@ -44,8 +44,6 @@ cleaned_crime_data <- cleaned_crime_data |>
     year = occ_year,
     month = occ_month,
     day = occ_day,
-    day_of_year = occ_doy,
-    day_of_week = occ_dow,
     hour_of_occurrence = occ_hour, 
     offence_type = mci_category
   )
