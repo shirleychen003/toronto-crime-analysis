@@ -16,5 +16,5 @@ scripts contains the R scripts used to simulate, download, and clean data.
 2. Run scripts/02-data_cleaning.R to generate cleaned data
 3. Render outputs/paper/toronto_crime_analysis.qmd to generate the PDF of the paper
 
-##LLM Usage
+## LLM Usage
 I acknowledge the usage of LLM tools for portions of this paper. To see the specific instances of usage, navigate to inputs/llm/usage.txt.
