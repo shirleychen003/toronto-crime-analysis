@@ -1,0 +1,163 @@
+---
+title: "From the Suburbs to Downtown: An In-Depth Analysis of Major Crime Occurrences Throughout the City of Toronto’s 158 Neighbourhoods (2019-2023)"
+author: "Shirley Chen"
+thanks: "Code and data in this report are available at: https://github.com/shirleychen003/toronto-crime-analysis.git" 
+date: "today"
+date-format: "long" 
+abstract: "Criminal activity levels throughout the many neighbourhoods in the city of Toronto have fluctuated over the past few years. Using data from OpenDataToronto, this paper will assess the various types of criminal offences that have occurred within Toronto’s 158 neighbourhoods, comparing areas with both higher and lower crime rates. A deeper understanding of the patterns and implications for community safety and urban development are illustrated by conducting a thorough analysis on criminal activity data in the city of Toronto’s 158 neighbourhoods."
+format: pdf
+toc: true
+number-sections: true
+bibliography: references.bib
+---
+
+```{r}
+#| include: false
+### Workspace Setup ###
+library(tidyverse)
+library(janitor)
+library(readr)
+library(opendatatoronto)
+library(here)
+library(ggplot2)
+library(knitr)
+library(usethis)
+library(gitcreds)
+library(kableExtra)
+
+# Read in the cleaned dataset
+cleaned_crime_data <- 
+  read_csv(
+    file = here("inputs/data/cleaned_crime_data.csv"),
+    show_col_types = FALSE,
+    skip = 0
+  )
+```
+
+# Introduction
+
+Known as the largest city in Canada, the city of Toronto is made up of neighbourhoods that altogether encompass the diverse atmosphere of the city. As of March 2022, the city of Toronto identifies 158 distinct neighbourhoods, rather than the 140 that were established in the late 1990s [@abouttorontoneighbourhoods].  Among the historical, cultural, and socioeconomic diversity, includes the ranges of criminal activity that vary depending on the area. As the population of Toronto continues to expand, some criminal activity levels within the city are also bound to progressively increase. According to a survey of 1500 Torontonian adults conducted by the Toronto Police Association (TPA), along with issues such as housing accessibility and affordability, one of the top concerns that Toronto residents have relate to crime and public safety within the city [@torontosafetysurvey]. Residents have voiced how issues such as TTC safety, hate crimes, gang violence, and auto theft have worsened, conveying their uneasiness about how dangerous the city has become. Furthermore, everyday news articles continuously release the latest crime updates in the city, causing residents to question the security and safety in their area.
+
+Understanding the complexities within the city is essential for numerous reasons. Those who may be unfamiliar with the city could be unaware of the more “safe” and more “dangerous” areas. Being informed about the criminal activity in different parts of Toronto assists with protecting one’s well being and personal safety. On the other hand, knowing which areas are filled with higher crime rates and suspicious activity levels can also engage communities and promote developing initiatives to support the overall safety of residents. This can encourage the government to allocate resources to communities to address certain needs.
+
+In the following paper, I investigate patterns and trends of criminal activity occurring during 2019-2023 within the City of Toronto’s 158 neighbourhoods. The data section consists of the graphs produced using `ggplot2` [@R-ggplot2] and tables produced using `knitr` [@R-knitr] and `kableExtra` [@R-kableExtra]. Any patterns or notable changes in data are discussed to present an in-depth analysis. Additionally, a description of the data cleaning processes applied to the dataset and the packages used are mentioned.
+
+# Data
+
+## Sources
+
+The dataset used in this paper is titled “Major Crime Indicators (MCI)” and was obtained from the City of Toronto’s open data portal, which was retrieved and saved in `R`[@R-base] using `opendatatoronto` [@R-opendatatoronto] and `readr`[@R-readr]. The package `here`[@R-here] was used to manage file paths and both `gitcreds` [@R-gitcreds] and `usethis` [@R-usethis] were used for GitHub functions.
+
+## Cleaning Procedure
+
+The data cleaning process included simplifying the dataset so that it could be understood and transformed into graphs. Packages used for this procedure included the `tidyverse`[@R-tidyverse] package , `tidyr`[@R-tidyr],`tibble`[@R-tibble], `janitor`[@R-janitor], and `dplyr`[@R-dplyr].
+
+Originally, the dataset contained information dating back to 2009. However, I chose to focus on the data occurring in the past 5 years, thus I removed all the rows which were not involved in the specific time range. Additionally, I wanted to focus on the date that the offences had occurred, not reported. Therefore, I removed any data that included the reporting date. Otherwise, I changed several column names for better understanding and removed any other unnecessary columns that were not relevant to my analysis.
+
+## Data Analysis
+
+Below shows a table of the total number of criminal offences that occurred per year from 2019 to 2023.
+
+```{r}
+#| echo: false
+
+# Incidents per year graph
+  yearly_data <- cleaned_crime_data |>
+    group_by(year) |>
+    summarise(Incidents = n()) |>
+    arrange(year)
+  
+  kable(yearly_data,
+    col.names = c("Years", "Number of Incidents"),
+    caption = "Number of Incidents by Year") |>
+    kable_styling(latex_options = "hold_position")
+
+```
+
+As we can see, there is a significant decline from 2019 to 2020. This drastic change may be attributed to the COVID-19 pandemic, as less of the Toronto population were spending their time in public or leaving their residence due to worries of contracting the virus. Even until 2021, we see that there are less incidents of criminal activity compared to the other years, which is around the time that stay-at-home orders were coming into effect and case numbers were rapidly rising.
+
+Once life became more "normal" after the pandemic, citizens were more open to being in public once again. However, there was also more criminal activity happening. In 2022, the incidents began to increase again and in 2023, there is a significant increase of 6,534 incidents. The incident numbers in 2019 are quite similar to those in 2022, but we see a considerable increase when comparing 2019 and 2023. This may be due to post-pandemic issues, such as effects on mental health and fluctuations in the housing market.
+
+Figure 1 illustrates that the most occurred offence type is assault and the least occurred offence type is theft over. As shown below in the graph, the numbers are drastically different.
+
+```{r}
+#| echo: false
+#| fig-cap: Number of Incidents by Offence Type
+# Incidents by offence type
+  offence_data <- cleaned_crime_data |>
+    group_by(offence_type) |>
+    summarise(Incidents = n()) |>
+    arrange(offence_type)
+  
+  ggplot(offence_data, aes(
+    x = as.factor(offence_type),
+    y = Incidents)) +
+    geom_bar(stat = "identity", fill = "skyblue") +
+    labs(title = "Number of Incidents by Offence (2019-2023)",
+         x = "Offence Type",
+         y = "Number of Incidents")
+```
+
+Finally, location is an unavoidable and crucial component to consider when analyzing criminal activity in the city. Depending on the individual, this knowledge can be used for personal safety reasons or for social impact motivations. Below, Figure 2 illustrates the areas with the most incidents of crime.
+
+```{r}
+#| echo: false
+#| fig-cap: Areas with the most incidents of crime
+
+# Areas with least and most offences
+  most_least_area_data <- cleaned_crime_data |>
+    group_by(neighbourhood_158) |>
+    summarise(Incidents = n()) |>
+    arrange(desc(Incidents))
+  
+  most_data <- head(most_least_area_data, 5)
+  descending_order <- c("West Humber-Clairville", "Moss Park", 
+                        "Downtown Yonge East", "York University Heights",
+                        "Yonge-Bay Corridor")
+  most_data$neighbourhood_158 <- factor(most_data$neighbourhood_158, 
+                                 levels = descending_order)
+  
+  # Most incidents of crime
+  ggplot(most_data, aes(
+    x = as.factor(neighbourhood_158),
+    y = Incidents)) +
+    geom_bar(stat = "identity", fill = "skyblue") +
+    labs(title = "Number of Incidents by Offence (2019-2023)",
+         x = "Offence Type",
+         y = "Number of Incidents") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+```
+
+We see that the 5 neighbourhoods with the most criminal incidents are (decreasing in order) West Humber-Clairville, Moss Park, Downtown Yonge East, York University Heights, and Yonge-Bay Corridor. With West Humber-Clairville as an exception, the other 4 of these neighbourhoods are located closer to the downtown area, where the population is more dense. Since there are more people, there is more chance for crime offence numbers to be higher.
+
+In contrast, Figure 3 displays the neighbourhoods with the least incidents of crime. According to this graph, the neighbourhoods that may be considered the "safest" are Woodbine-Lumsden, Guildwood, Lambton Baby Point, Humber Heights-Westmount, and Old East York. Most of these neighbourhoods are in out of the city in the suburbs, in less densely populated areas. Individuals who are interested in buying property are likely to take these statistics in to consideration.
+
+```{r}
+#| echo: false
+#| fig-cap: Areas with the least incidents of crime
+
+
+ # Area with least incidents of crime
+  least_data <- tail(most_least_area_data, 5)
+  ascending_order <- c("Woodbine-Lumsden", "Guildwood", "Lambton Baby Point",
+                       "Humber Heights-Westmount", "Old East York")
+  least_data$neighbourhood_158 <- factor(least_data$neighbourhood_158, 
+                                 levels = ascending_order)
+   ggplot(least_data, aes(
+    x = as.factor(neighbourhood_158),
+    y = Incidents)) +
+    geom_bar(stat = "identity", fill = "skyblue") +
+    labs(title = "Number of Incidents by Offence (2019-2023)",
+         x = "Offence Type",
+         y = "Number of Incidents") +
+    theme(axis.text.x = element_text(size = 7, angle = 30, hjust = 1))
+```
+
+# Conclusion
+
+This paper investigates the growing trends of criminal activity within Toronto's 158 neighbourhoods. Over the course of 5 years between 2019 and 2023, data collected showed that 2023 had the highest rates of criminal activity, whereas the lowest rates were in 2020 and 2021. The 2020 and 2021 numbers can be attributed to the pandemic. Further, assaults were recorded to be the most occurred offence type. Finally, it was demonstrated that West Humber-Clairville, Moss Park, Downtown Yonge East, York University Heights, and Yonge-Bay Corridor contained the most amount of criminal activity, while Woodbine-Lumsden, Guildwood, Lambton Baby Point, Humber Heights-Westmount, and Old East York contain the least amount of criminal activity. Overall, with crime rates fluctuating in the city of Toronto, the analysis of Toronto major crimes assists with informing individuals of the diverse regions and activity levels within the city.
+
+------------------------------------------------------------------------
+
+# References
