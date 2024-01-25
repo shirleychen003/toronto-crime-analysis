@@ -14,10 +14,9 @@ library(readr)
 #### Acquire data ####
 # Based on code from https://tellingstorieswithdata.com/02-drinking_from_a_fire_hose.html#simulate-2
 raw_crime_data <-
-  read_csv(
-    file = "raw_crime_data.csv",
-    show_col_types = FALSE
-  )
+  read_csv(file = "toronto-crime-analysis/inputs/data/raw_crime_data.csv", 
+           show_col_types = FALSE)
+
 write_csv(x = raw_crime_data, file = "raw_crime_data.csv")
 
 raw_crime_data
