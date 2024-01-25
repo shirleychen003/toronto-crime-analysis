@@ -53,6 +53,8 @@ Below shows a table of the total number of criminal offences that occurred per y
 
 ```{r}
 #| echo: false
+cleaned_crime_data <-
+  read_csv("../data/cleaned_crime_data.csv")
 
 # Incidents per year graph
   yearly_data <- cleaned_crime_data |>
@@ -76,6 +78,10 @@ Figure 1 illustrates that the most occurred offence type is assault and the leas
 ```{r}
 #| echo: false
 #| fig-cap: Number of Incidents by Offence Type
+
+cleaned_crime_data <-
+  read_csv("../data/cleaned_crime_data.csv")
+
 # Incidents by offence type
   offence_data <- cleaned_crime_data |>
     group_by(offence_type) |>
@@ -96,6 +102,9 @@ Finally, location is an unavoidable and crucial component to consider when analy
 ```{r}
 #| echo: false
 #| fig-cap: Areas with the most incidents of crime
+
+cleaned_crime_data <-
+  read_csv("../data/cleaned_crime_data.csv")
 
 # Areas with least and most offences
   most_least_area_data <- cleaned_crime_data |>
@@ -129,7 +138,6 @@ In contrast, Figure 3 displays the neighbourhoods with the least incidents of cr
 ```{r}
 #| echo: false
 #| fig-cap: Areas with the least incidents of crime
-
 
  # Area with least incidents of crime
   least_data <- tail(most_least_area_data, 5)
