@@ -7,6 +7,11 @@
 # Pre-requisites: none
 
 #### Workspace setup ####
+install.packages("ggplot2")
+install.packages("knit2")
+install.packages("usethis")
+install.packages("gitcreds")
+install.packages("kableExtra")
 install.packages("janitor")
 install.packages("here")
 library(tidyverse)
