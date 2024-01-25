@@ -14,9 +14,11 @@ library(here)
 library(janitor)
 library(opendatatoronto)
 
-raw_crime_data <- 
-  read_csv(file = "toronto-crime-analysis/inputs/data/raw_crime_data.csv", 
-           show_col_types = FALSE)
+# Cleaned CSV
+write_csv(
+  x = cleaned_crime_data,
+  file = "toronto-crime-analysis/inputs/data/cleaned_crime_data.csv"
+)
 
 cleaned_crime_data <-
   clean_names(raw_crime_data)
