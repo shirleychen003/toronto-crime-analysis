@@ -31,13 +31,6 @@ library(usethis)
 library(gitcreds)
 library(kableExtra)
 
-# Read in the cleaned dataset
-cleaned_crime_data <- 
-  read_csv(
-    file = here("toronto-crime-analysis/outputs/data/cleaned_crime_data.csv"),
-    show_col_types = FALSE,
-    skip = 0
-  )
 ```
 
 # Introduction
