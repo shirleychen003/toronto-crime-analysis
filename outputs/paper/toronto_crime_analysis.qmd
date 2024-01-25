@@ -14,6 +14,12 @@ bibliography: references.bib
 ```{r}
 #| include: false
 ### Workspace Setup ###
+install.packages(ggplot2)
+install.packages(knit2)
+install.packages(usethis)
+install.packages(gitcreds)
+install.packages(kableExtra)
+
 library(tidyverse)
 library(janitor)
 library(readr)
