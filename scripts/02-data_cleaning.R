@@ -7,6 +7,8 @@
 # Pre-requisites: none
 
 #### Workspace setup ####
+install.packages(janitor)
+install.packages(here)
 library(tidyverse)
 library(here)
 library(janitor)
