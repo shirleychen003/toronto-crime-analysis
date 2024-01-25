@@ -9,6 +9,8 @@
 # - https://open.toronto.ca/dataset/major-crime-indicators/
 
 #### Workspace Setup ####
+install.packages(tidyverse)
+install.packages(ggplot2)
 library(tidyverse)
 library(ggplot2)
 
