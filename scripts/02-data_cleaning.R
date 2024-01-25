@@ -15,12 +15,8 @@ library(janitor)
 library(opendatatoronto)
 
 raw_crime_data <- 
-  read_csv(
-    file = here("inputs/data/raw_crime_data.csv"),
-    show_col_types = FALSE,
-    skip = 0
-  )
-
+  read_csv(file = "toronto-crime-analysis/inputs/data/raw_crime_data.csv", 
+           show_col_types = FALSE)
 
 cleaned_crime_data <-
   clean_names(raw_crime_data)
