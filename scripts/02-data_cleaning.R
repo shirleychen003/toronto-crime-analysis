@@ -17,7 +17,7 @@ library(opendatatoronto)
 # Cleaned CSV
 write_csv(
   x = cleaned_crime_data,
-  file = "toronto-crime-analysis/inputs/data/cleaned_crime_data.csv"
+  file = "toronto-crime-analysis/outputs/data/cleaned_crime_data.csv"
 )
 
 cleaned_crime_data <-
