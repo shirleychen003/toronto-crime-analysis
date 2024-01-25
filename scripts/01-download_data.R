@@ -7,6 +7,8 @@
 # Pre-requisites: none
 
 #### Workspace setup ####
+install.packages(opendatatoronto)
+install.packages(readr)
 library(opendatatoronto)
 library(tidyverse)
 library(readr)
